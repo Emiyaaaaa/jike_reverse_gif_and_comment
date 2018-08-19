@@ -46,7 +46,8 @@ if id not in used_id:
         frames[0].save('out.gif', save_all=True, append_images=frames[1:])
         #评论
         try:
-            c.comment_it('',topic_selected[post_index],pictures='out.gif',sync2personal_updates=False)
+            pass
+            # c.comment_it('',topic_selected[post_index],pictures='out.gif',sync2personal_updates=False)
         except:
             pass
         #成功评论，将此消息id加入文件中
