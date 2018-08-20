@@ -18,18 +18,18 @@ c = jike.JikeClient()
 
 while True:
     for (topic,topic_id) in topic_id_dict.items():
-        # try:
-        topic_selected = c.get_topic_selected(topic_id = topic_id)
-        #获取图片
-        pictures = []
-        for item in topic_selected[post_index].pictures:
-            if item['format'] == 'gif':
-                pictures.append(item['picUrl'])
-        #图片数量
-        pic_num = len(pictures)
-        # except BaseException as e:
-        #     print('爬取出错！'+str(e))
-        #     continue
+        try:
+            topic_selected = c.get_topic_selected(topic_id = topic_id)
+            #获取图片
+            pictures = []
+            for item in topic_selected[post_index].pictures:
+                if item['format'] == 'gif':
+                    pictures.append(item['picUrl'])
+            #图片数量
+            pic_num = len(pictures)
+        except BaseException as e:
+            print('爬取出错！'+str(e))
+            continue
 
 
         def comment():
