@@ -9,13 +9,12 @@ topic_id_dict={
           '有趣的GIF动图':'5aa0c90f8e88bd00164daa3b',
           '不好笑便利店':'5701d10d5002b912000e588d'
           }
-
-
 user_id_fn = 'id.list'
 post_index = 0#动态下标，默认为0
 
-c = jike.JikeClient()
 
+
+c = jike.JikeClient()
 while True:
     for (topic,topic_id) in topic_id_dict.items():
         try:
@@ -69,7 +68,7 @@ while True:
 
 
 
-        if pic_num != 0 and pic_num <= 3:
+        if pic_num != 0 and pic_num < 3:
             #获取id
             id = topic_selected[post_index].id
             try:
@@ -86,7 +85,7 @@ while True:
                     msg = comment()
                     print(msg)
                 except:
-                    sys.exit('评论发生未知错误')
+                    sys.exit('评论时发生未知错误')
                 #成功评论，将此消息id加入文件中
                 used_id.append(id)
                 msg['id'] = str(id)
