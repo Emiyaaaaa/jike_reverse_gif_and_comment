@@ -2,7 +2,6 @@ import jike
 import pickle
 from PIL import Image, ImageSequence
 import urllib.request
-import os
 import time
 
 topic_id={
