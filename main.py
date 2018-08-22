@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# @Author  : Li Haozheng
+# @Time    : 2018/8/18 17:14
+
+"""
+应对即刻反爬虫：执行 get_topic_selected 间隔应至少为 15 秒 (经过1000次试验通过)
+若不慎账号被即刻采取反爬虫措施( app 所有页面403错误，网页版 Not found )，耐心等待 420 秒左右即可恢复正常
+"""
+
 import jike
 import pickle
 from PIL import Image, ImageSequence
@@ -5,10 +15,11 @@ import urllib.request
 import time
 import sys
 
+
 topic_id_dict={
-          '有趣的GIF动图':'5aa0c90f8e88bd00164daa3b',
-          '不好笑便利店':'5701d10d5002b912000e588d'
-          }
+              '有趣的GIF动图':'5aa0c90f8e88bd00164daa3b',
+              '不好笑便利店':'5701d10d5002b912000e588d'
+              }
 user_id_fn = 'id.list'
 post_index = 0#动态下标，默认为0
 
@@ -27,7 +38,8 @@ while True:
             #图片数量
             pic_num = len(pictures)
         except BaseException as e:
-            print('爬取出错！'+str(e))
+            print(str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))+' : 爬取出错！'+str(e))
+            time.sleep(61)
             continue
 
 
@@ -37,25 +49,25 @@ while True:
                 pic = pictures[i]
                 #gif倒放
                 try:
-                    urllib.request.urlretrieve(pic, 'ani.gif')
-                    with Image.open('ani.gif') as im:
+                    urllib.request.urlretrieve(pic, 'gif/ani.gif')
+                    with Image.open('gif/ani.gif') as im:
                         if im.is_animated:
                             frames = [f.copy() for f in ImageSequence.Iterator(im)]
                     frames.reverse()
                     #保存
-                    frames[0].save('out.gif', save_all=True, append_images=frames[1:])
+                    frames[0].save('gif/out.gif', save_all=True, append_images=frames[1:])
                     #评论
                     if i != 0:
                         time.sleep(6)
                     if topic_id == topic_id_dict['不好笑便利店']:
                         #同时转发
-                        c.comment_it('',topic_selected[post_index],pictures='out.gif')
+                        c.comment_it('',topic_selected[post_index],pictures='gif/out.gif')
                         msg['result'+str(i)] = 'succeed'
                         msg['personal_updates'+str(i)] = 'true'
                         msg['comment_time'+str(i)] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
                     else:
                         #不转发
-                        c.comment_it('',topic_selected[post_index],pictures='out.gif',sync2personal_updates=False)
+                        c.comment_it('',topic_selected[post_index],pictures='gif/out.gif')
                         msg['result' + str(i)] = 'succeed'
                         msg['personal_updates' + str(i)] = 'false'
                         msg['comment_time'+str(i)] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -83,6 +95,7 @@ while True:
             if id not in used_id:
                 try:
                     msg = comment()
+                    print(str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
                     print(msg)
                 except:
                     sys.exit('评论时发生未知错误')
@@ -112,5 +125,4 @@ while True:
                         else:
                             fileobject.write('\n\t\t\t  '+msg['result'+str(i)]+'  '+msg['comment_time'+str(i)])
 
-        time.sleep(1)
-    time.sleep(1)
+        time.sleep(20)
