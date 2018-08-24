@@ -22,7 +22,8 @@ topic_id_dict={
               }
 user_id_fn = 'id.list'
 post_index = 0#动态下标，默认为0
-
+wait_time = 15
+error_time = 600
 
 
 c = jike.JikeClient()
@@ -37,9 +38,10 @@ while True:
                     pictures.append(item['picUrl'])
             #图片数量
             pic_num = len(pictures)
+            print('succeed: '+ str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
         except BaseException as e:
             print(str(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))+' : 爬取出错！'+str(e))
-            time.sleep(61)
+            time.sleep(error_time)
             continue
 
 
@@ -125,4 +127,4 @@ while True:
                         else:
                             fileobject.write('\n\t\t\t  '+msg['result'+str(i)]+'  '+msg['comment_time'+str(i)])
 
-        time.sleep(20)
+        time.sleep(wait_time)

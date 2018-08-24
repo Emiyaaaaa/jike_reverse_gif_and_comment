@@ -9,7 +9,7 @@ import os
 
 c = jike.JikeClient()
 j = 1
-i = 9
+i = 15
 time.sleep(600)
 while True:
     try:
